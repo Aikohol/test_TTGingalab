@@ -1,0 +1,4 @@
+requests==2.20.1
+hug==2.4.0
+pony==0.7.6
+gunicorn

@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+
+    tests:
+        build: ./tests
+        container_name: tests
+        image: tests
+        volumes:
+            - ./tests/src:/src:ro
+        depends_on:
+            - calendar
+        links:
+            - calendar:calendar
+
+    calendar:
+        build: ./calendar
+        container_name: calendar
+        image: calendar
+        volumes:
+            - ./calendar/src:/src:rw
+        ports:
+            - "8123:8123"
