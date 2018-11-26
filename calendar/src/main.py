@@ -1,7 +1,7 @@
 from logging import getLogger
 
 import hug
-from falcon import HTTP_404, HTTP_201
+from falcon import HTTP_404, HTTP_201, HTTP_409
 from pony import orm
 
 from models import Calendar, Date
@@ -33,18 +33,23 @@ def reset_calendars():
 
     return dict(status="done")
 
+
 @hug.post('/calendars/{calendar}/')
 def add_date(response, calendar, date, event):
     with orm.db_session:
-        if Calendar.get(id=calendar):
-            calendar = Calendar.get(id=calendar)
-            logger.warning("201")
-            date = Date(calendar=calendar, date=date, event=event)
-            response.status = HTTP_201
+        calendar = Calendar.get(id=calendar)
+        if calendar:
+            if date in calendar.dates:
+                response.status = HTTP_409
+            else:
+                logger.warning("201")
+                Date(calendar=calendar, date=date, event=event)
+                response.status = HTTP_201
+
         else:
             logger.warning("404")
             response.status = HTTP_404
-        return {}
+
 
 @hug.get('/calendars/{calendar}/dates/')
 def get_dates(response, calendar):

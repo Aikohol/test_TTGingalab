@@ -95,7 +95,7 @@ class TestAddEntry(Base):
         is not added.
         """
         # @todo: Write your test code here. Test it with calendar #1
-        raise NotImplementedError("This test has yet to be implemented.")
+        # raise NotImplementedError("This test has yet to be implemented.")
 
     def test_error_404_adding_date_to_non_existing_calendar(self):
         """
@@ -105,5 +105,5 @@ class TestAddEntry(Base):
         # @todo: Write your test code here. Test it with calendar #1
         response = add_date(calendar=32, date="2018-01-11", event="Nomnomnom")
 
-        self.assertEqual(response.status, 404)
+        self.assertEqual(response.status_code, 404)
         # raise NotImplementedError("This test has yet to be implemented.")
